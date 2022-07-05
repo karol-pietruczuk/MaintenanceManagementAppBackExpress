@@ -1,8 +1,10 @@
 import {OrderEntity, OrderStatus} from "../types";
 import {ValidationError} from "../utils/error";
 
-interface NewOrderEntity extends Omit<OrderEntity, 'id'> {
+interface NewOrderEntity extends Omit<OrderEntity, 'id' | 'createTime' | 'lastChangeTime'> {
     id?: string;
+    createTime?: Date;
+    lastChangeTime?: Date
 }
 
 export class OrderRecord implements NewOrderEntity {

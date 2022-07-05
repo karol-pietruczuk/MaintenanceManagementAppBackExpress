@@ -1,8 +1,10 @@
 import {TaskEntity, TaskStatus} from "../types";
 import {ValidationError} from "../utils/error";
 
-interface NewTaskEntity extends Omit<TaskEntity, 'id'> {
+interface NewTaskEntity extends Omit<TaskEntity, 'id' | 'createTime' | 'lastChangeTime'> {
     id?: string;
+    createTime?: Date;
+    lastChangeTime?: Date
 }
 
 export class TaskRecord implements NewTaskEntity {

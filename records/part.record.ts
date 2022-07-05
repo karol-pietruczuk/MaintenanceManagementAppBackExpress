@@ -1,8 +1,10 @@
 import {PartEntity, PartUnit} from "../types";
 import {ValidationError} from "../utils/error";
 
-interface NewPartEntity extends Omit<PartEntity, 'id'> {
+interface NewPartEntity extends Omit<PartEntity, 'id' | 'createTime' | 'lastChangeTime'> {
     id?: string;
+    createTime?: Date;
+    lastChangeTime?: Date
 }
 
 export class PartRecord implements NewPartEntity {
