@@ -1,7 +1,7 @@
 import express from 'express';
 import 'express-async-errors';
-import {taskRouter} from "./Routers/task.router";
-import {partRouter} from "./Routers/part.router";
+import {taskRouter} from "./routers/task.router";
+import {partRouter} from "./routers/part.router";
 import {handleError} from "./utils/error";
 
 const app = express();
