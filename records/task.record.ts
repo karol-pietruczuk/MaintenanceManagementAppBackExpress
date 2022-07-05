@@ -8,7 +8,7 @@ interface NewTaskEntity extends Omit<TaskEntity, 'id'> {
 export class TaskRecord implements NewTaskEntity {
     public id: string;
     public name: string;
-    public description: string;
+    public description: string = '';
     public status: TaskStatus = TaskStatus.Reported;
     public createTime: Date;
     public lastChangeTime: Date;
@@ -21,6 +21,7 @@ export class TaskRecord implements NewTaskEntity {
         if (obj.description.length > 1000) {
             throw new ValidationError('Opis zadania nie może przekraczać 1000 znaków.');
         }
+
         this.name = obj.name;
         this.description = obj.description;
         this.status = obj.status;

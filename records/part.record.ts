@@ -1,5 +1,5 @@
-import {ValidationError} from "../utils/error";
 import {PartEntity, PartUnit} from "../types";
+import {ValidationError} from "../utils/error";
 
 interface NewPartEntity extends Omit<PartEntity, 'id'> {
     id?: string;
@@ -33,7 +33,5 @@ export class PartRecord implements NewPartEntity {
         this.unit = obj.unit;
         this.storagePlace = obj.storagePlace;
     }
-
-
 
 }
