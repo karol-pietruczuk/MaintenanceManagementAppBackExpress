@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {Router} from 'express';
 import 'express-async-errors';
 import cors from "cors";
 import {taskRouter} from "./routers/task.router";
@@ -15,9 +15,13 @@ app.use(cors({
 
 app.use(express.json());
 
-app.use('/task', taskRouter);
-app.use('/part', partRouter);
-app.use('/order', orderRouter);
+const router = Router();
+
+router.use('/task', taskRouter);
+router.use('/part', partRouter);
+router.use('/order', orderRouter);
+
+app.use('/api', router);
 
 app.use(handleError);
 
