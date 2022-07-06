@@ -14,3 +14,9 @@ export interface OrderEntity {
     createTime: Date;
     lastChangeTime: Date;
 }
+
+export interface NewOrderEntity extends Omit<OrderEntity, 'id' | 'createTime' | 'lastChangeTime'> {
+    id?: string;
+    createTime?: Date;
+    lastChangeTime?: Date
+}

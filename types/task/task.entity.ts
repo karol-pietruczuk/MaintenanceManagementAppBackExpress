@@ -16,3 +16,9 @@ export interface TaskEntity {
     createTime: Date;
     lastChangeTime: Date;
 }
+
+export interface NewTaskEntity extends Omit<TaskEntity, 'id' | 'createTime' | 'lastChangeTime'> {
+    id?: string;
+    createTime?: Date;
+    lastChangeTime?: Date
+}

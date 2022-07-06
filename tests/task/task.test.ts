@@ -1,12 +1,12 @@
 import {TaskRecord} from "../../records/task.record";
-import {TaskStatus} from "../../types";
+import {NewTaskEntity, TaskStatus} from "../../types";
 import {pool} from "../../utils/db";
 
 afterAll(() => {
    pool.end();
 });
 
-const defaultObj = {
+const defaultObj: NewTaskEntity = {
     name: 'Test Name',
     description: 'blah',
     status: TaskStatus.Reported,
@@ -54,9 +54,6 @@ test('TaskRecord.update change task status from "Reported" to "Open", inserts in
     await task.insert();
     task.status = newStatus;
     await task.update();
-    expect(task.id).toBe(task.id);
-    expect(task.name).toBe(task.name);
-    expect(task.description).toBe(task.description);
     expect(newStatus).toBe(task.status);
     await task.delete();
 });

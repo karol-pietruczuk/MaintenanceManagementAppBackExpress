@@ -2,13 +2,11 @@ import {Router} from "express";
 import {TaskRecord} from "../records/task.record";
 import {TaskStatus} from "../types";
 import {ValidationError} from "../utils/error";
+import {handleFindVariables} from "../utils/validation";
 
 export const taskRouter = Router()
     .get('/', async (req, res) => {
-        const sortAsc = (req.body.sortAsc || typeof req.body.sortAsc === 'boolean') ? req.body.sortAsc : true;
-        const name = (req.body.name || typeof req.body.name === 'string') ? req.body.name : '';
-        const rows = (req.body.rows || typeof req.body.rows === 'number') ? req.body.rows : 15;
-        const page = (req.body.page || typeof req.body.page === 'number') ? req.body.page : 1;
+        const {sortAsc, name, rows, page} = handleFindVariables(req.body)
         const tasks = await TaskRecord.find(sortAsc, name, rows, page);
         res.json(tasks);
     })

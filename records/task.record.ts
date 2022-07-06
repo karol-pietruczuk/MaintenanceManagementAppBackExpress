@@ -1,14 +1,8 @@
-import {TaskEntity, TaskStatus} from "../types";
+import {NewTaskEntity, TaskEntity, TaskStatus} from "../types";
 import {ValidationError} from "../utils/error";
 import {pool} from "../utils/db";
 import {FieldPacket, format} from "mysql2";
-import {v4 as uuid} from "uuid";
-
-interface NewTaskEntity extends Omit<TaskEntity, 'id' | 'createTime' | 'lastChangeTime'> {
-    id?: string;
-    createTime?: Date;
-    lastChangeTime?: Date
-}
+import {handleId} from "../utils/validation";
 
 type TaskRecordResults = [TaskEntity[], FieldPacket[]];
 
@@ -21,17 +15,18 @@ export class TaskRecord implements NewTaskEntity {
     public lastChangeTime: Date;
 
     constructor(obj: NewTaskEntity) {
-        if (!obj.name || obj.name.length > 100) {
+
+        if (!obj.name || typeof obj.name !== "string" || obj.name.length > 100) {
             throw new ValidationError('Nazwa zadania nie może być pusta, ani przekraczać 100 znaków.');
         }
 
-        if (obj.description && obj.description.length > 1000) {
+        if (obj.description === null || obj.description === undefined || typeof obj.description !== "string" || obj.description.length > 1000) {
             throw new ValidationError('Opis zadania nie może przekraczać 1000 znaków.');
         }
 
         this.id = obj.id;
         this.name = obj.name;
-        this.description = obj.description ? obj.description : '';
+        this.description = obj.description;
         this.status = TaskStatus[obj.status] ? obj.status : TaskStatus.Reported;
         this.createTime = obj.createTime ? obj.createTime : new Date();
         this.lastChangeTime = obj.lastChangeTime ? obj.lastChangeTime : new Date();
@@ -66,11 +61,7 @@ export class TaskRecord implements NewTaskEntity {
     }
 
     async insert(): Promise<TaskRecord> {
-        if (!this.id) {
-            this.id = uuid();
-        } else {
-            throw new ValidationError('Cannot insert something that is already inserted!');
-        }
+        this.id = handleId(this.id);
 
         this.createTime = new Date();
         this.lastChangeTime = new Date();

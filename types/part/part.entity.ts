@@ -12,3 +12,9 @@ export interface PartEntity {
     createTime: Date;
     lastChangeTime: Date;
 }
+
+export interface NewPartEntity extends Omit<PartEntity, 'id' | 'createTime' | 'lastChangeTime'> {
+    id?: string;
+    createTime?: Date;
+    lastChangeTime?: Date
+}

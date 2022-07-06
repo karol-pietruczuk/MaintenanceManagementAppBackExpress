@@ -1,7 +1,7 @@
 import {TaskRecord} from "../../records/task.record";
-import {TaskStatus} from "../../types";
+import {NewTaskEntity, TaskStatus} from "../../types";
 
-const defaultObj = {
+const defaultObj: NewTaskEntity = {
     name: 'Test Name',
     description: 'blah',
     status: TaskStatus.Reported,
@@ -33,10 +33,8 @@ test('Validates invalid description', () => {
 });
 
 test('Validates possibility to insert undefined to description', async () => {
-    const task = new TaskRecord ({
-        name: 'Test Name',
+    expect(() => new TaskRecord({
+        ...defaultObj,
         description: undefined,
-        status: TaskStatus.Reported,
-    });
-    expect(task.description).toBeDefined();
+    })).toThrow('Opis zadania nie może przekraczać 1000 znaków.');
 });
