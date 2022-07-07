@@ -75,7 +75,7 @@ export class TaskRecord implements NewTaskEntity {
         this.lastChangeTime = new Date();
         await pool.execute("UPDATE `tasks` SET `status` = :status, `lastChangeTime` = :lastChangeTime WHERE `id` = :id", {
             id: this.id,
-            status: this.id,
+            status: this.status,
             lastChangeTime: this.lastChangeTime,
         });
         return this;
