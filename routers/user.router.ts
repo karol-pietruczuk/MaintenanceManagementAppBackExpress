@@ -13,3 +13,5 @@ export const userRouter = Router()
         res.json(users)
 });
 
+//@TODO Add endpoints that allow admins to create, update and delete users.
+

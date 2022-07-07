@@ -28,7 +28,13 @@ export const authRouter = Router()
                 httpOnly: true,
         });
 
-        res.json({ accessToken, refreshToken })
+
+        res.json({
+            accessToken,
+            refreshToken,
+            email,
+            userType: user.userType,
+        });
     })
     .post('/refresh', async (req, res) => {
 

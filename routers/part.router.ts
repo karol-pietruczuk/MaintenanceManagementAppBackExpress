@@ -1,23 +1,35 @@
 import {Router} from "express";
 import {handleFindVariables} from "../utils/validation";
 import {PartRecord} from "../records/part.record";
-import {PartUnit} from "../types";
-import {ValidationError} from "../utils/error";
+import {PartUnit, UserType} from "../types";
+import {AccessError, ValidationError} from "../utils/error";
+import {UserRecord} from "../records/user.record";
+import {authenticate} from "../utils/auth";
+import {AuthenticationRequest} from "../types/auth/auth";
 
 export const partRouter = Router()
-    .get('/', async (req, res) => {
+    .get('/', authenticate, async (req: AuthenticationRequest, res) => {
+        const user = await UserRecord.getOne(req.user.id, true);
+        if (user.userType === UserType.Production) throw new AccessError("Forbidden");
+
         const {sortAsc, name, rows, page} = handleFindVariables(req.body)
         const parts = await PartRecord.find(sortAsc, name, rows, page);
         res.json(parts);
     })
-    .post('/', async (req, res) => {
+    .post('/', authenticate, async (req: AuthenticationRequest, res) => {
+        const user = await UserRecord.getOne(req.user.id, true);
+        if (user.userType !== UserType.Admin && user.userType !== UserType.Warehouse) throw new AccessError("Forbidden");
+
         const part = new PartRecord(req.body);
         await part.insert();
         res
             .status(201)
             .json(part);
     })
-    .patch('/', async (req, res) => {
+    .patch('/', authenticate, async (req: AuthenticationRequest, res) => {
+        const user = await UserRecord.getOne(req.user.id, true);
+        if (user.userType !== UserType.Admin && user.userType !== UserType.Warehouse) throw new AccessError("Forbidden");
+
         const part = await PartRecord.getOne(req.body.id);
         const {name, amount, storagePlace, unit} = req.body;
         let changed = false;
@@ -50,7 +62,10 @@ export const partRouter = Router()
             .status(202)
             .json(part);
     })
-    .delete('/', async (req, res) => {
+    .delete('/', authenticate, async (req: AuthenticationRequest, res) => {
+        const user = await UserRecord.getOne(req.user.id, true);
+        if (user.userType !== UserType.Admin && user.userType !== UserType.Warehouse) throw new AccessError("Forbidden");
+
         const part = await PartRecord.getOne(req.body.id);
         await part.delete();
         res

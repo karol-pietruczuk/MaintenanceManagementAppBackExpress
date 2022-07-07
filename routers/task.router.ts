@@ -1,8 +1,11 @@
 import {Router} from "express";
 import {TaskRecord} from "../records/task.record";
-import {TaskStatus} from "../types";
-import {ValidationError} from "../utils/error";
+import {TaskStatus, UserType} from "../types";
+import {AccessError, ValidationError} from "../utils/error";
 import {handleFindVariables} from "../utils/validation";
+import {authenticate} from "../utils/auth";
+import {AuthenticationRequest} from "../types/auth/auth";
+import {UserRecord} from "../records/user.record";
 
 export const taskRouter = Router()
     .get('/', async (req, res) => {
@@ -17,7 +20,10 @@ export const taskRouter = Router()
             .status(201)
             .json(task);
     })
-    .patch('/', async (req, res) => {
+    .patch('/', authenticate, async (req: AuthenticationRequest, res) => {
+        const user = await UserRecord.getOne(req.user.id, true);
+        if (user.userType !== UserType.Admin && user.userType !== UserType.Maintenance) throw new AccessError("Forbidden");
+
         if (!TaskStatus[req.body.status as TaskStatus]) {
             throw new ValidationError('Invalid task status!');
         }
@@ -28,7 +34,10 @@ export const taskRouter = Router()
             .status(202)
             .json(task);
     })
-    .delete('/', async (req, res) => {
+    .delete('/', authenticate, async (req: AuthenticationRequest, res) => {
+        const user = await UserRecord.getOne(req.user.id, true);
+        if (user.userType !== UserType.Admin) throw new AccessError("Forbidden");
+
         const task = await TaskRecord.getOne(req.body.id);
         await task.delete();
         res
