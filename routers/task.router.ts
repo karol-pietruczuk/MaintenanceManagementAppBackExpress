@@ -8,12 +8,12 @@ import {AuthenticationRequest} from "../types/auth/auth";
 import {UserRecord} from "../records/user.record";
 
 export const taskRouter = Router()
-    .get('/', async (req, res) => {
+    .get('/', authenticate, async (req: AuthenticationRequest, res) => {
         const {sortAsc, name, rows, page} = handleFindVariables(req.body)
         const tasks = await TaskRecord.find(sortAsc, name, rows, page);
         res.json(tasks);
     })
-    .post('/', async (req, res) => {
+    .post('/', authenticate, async (req: AuthenticationRequest, res) => {
         const task = new TaskRecord(req.body);
         await task.insert();
         res

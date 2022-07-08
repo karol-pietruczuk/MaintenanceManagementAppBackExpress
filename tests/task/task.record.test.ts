@@ -18,23 +18,23 @@ test('Validates invalid name', () => {
     expect(() => new TaskRecord({
         ...defaultObj,
         name: null,
-    })).toThrow('Nazwa zadania nie może być pusta, ani przekraczać 100 znaków.');
+    })).toThrow('Task name cannot be empty or exceed 100 characters.');
     expect(() => new TaskRecord({
         ...defaultObj,
         name: 'a'.repeat(101),
-    })).toThrow('Nazwa zadania nie może być pusta, ani przekraczać 100 znaków.');
+    })).toThrow('Task name cannot be empty or exceed 100 characters.');
 });
 
 test('Validates invalid description', () => {
     expect(() => new TaskRecord({
         ...defaultObj,
         description: 'a'.repeat(1001),
-    })).toThrow('Opis zadania nie może przekraczać 1000 znaków.');
+    })).toThrow('Task description must exist and cannot exceed 1000 characters.');
 });
 
 test('Validates possibility to insert undefined to description', async () => {
     expect(() => new TaskRecord({
         ...defaultObj,
         description: undefined,
-    })).toThrow('Opis zadania nie może przekraczać 1000 znaków.');
+    })).toThrow('Task description must exist and cannot exceed 1000 characters.');
 });

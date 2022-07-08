@@ -1,4 +1,5 @@
 import {Request} from "express";
+import {UserType} from "../user";
 
 export interface AuthData {
     id: string;

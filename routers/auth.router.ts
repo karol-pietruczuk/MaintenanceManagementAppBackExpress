@@ -15,7 +15,7 @@ export const authRouter = Router()
         // const validPassword = await bcrypt.compare(password, user[0].password)
 
         if (!user || user.password !== password) {
-            throw new AuthError('Niepoprawny email lub hasło!')
+            throw new AuthError('Invalid email address or password.')
         }
 
         const accessToken = generateAccessToken({ id: user.id })
@@ -28,11 +28,9 @@ export const authRouter = Router()
                 httpOnly: true,
         });
 
-
         res.json({
             accessToken,
             refreshToken,
-            email,
             userType: user.userType,
         });
     })
@@ -69,8 +67,8 @@ export const authRouter = Router()
     })
     .delete('/logout', async (req, res) => {
         const {refreshToken} = req.body;
-        if (!refreshToken) throw new AuthError("Unauthorized");
         res.clearCookie("JWT");
+        if (!refreshToken) throw new AuthError("Unauthorized");
         const users = await UserRecord.getAll();
         const user = users.find((user: UserRecord) => user.refreshToken === refreshToken);
         user.refreshToken = null;

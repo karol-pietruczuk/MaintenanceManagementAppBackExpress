@@ -12,9 +12,9 @@ import {userRouter} from "./routers/user.router";
 
 const app = express();
 
-// app.use(cors({
-//     origin: config.corsOrigin,
-// }));
+app.use(cors({
+    origin: config.corsOrigin,
+}));
 
 app.use(express.json());
 app.use(cookieParser())

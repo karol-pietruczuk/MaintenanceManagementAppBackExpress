@@ -17,11 +17,11 @@ export class TaskRecord implements NewTaskEntity {
     constructor(obj: NewTaskEntity) {
 
         if (!obj.name || typeof obj.name !== "string" || obj.name.length > 100) {
-            throw new ValidationError('Nazwa zadania nie może być pusta, ani przekraczać 100 znaków.');
+            throw new ValidationError('Task name cannot be empty or exceed 100 characters.');
         }
 
         if (obj.description === null || obj.description === undefined || typeof obj.description !== "string" || obj.description.length > 1000) {
-            throw new ValidationError('Opis zadania nie może przekraczać 1000 znaków.');
+            throw new ValidationError('Task description must exist and cannot exceed 1000 characters.');
         }
 
         this.id = obj.id;

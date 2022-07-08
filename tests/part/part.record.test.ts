@@ -20,31 +20,31 @@ test('Validates invalid name', () => {
     expect(() => new PartRecord({
         ...defaultObj,
         name: null,
-    })).toThrow("Nazwa części nie może być pusta, ani przekraczać 50 znaków.");
+    })).toThrow("Part name cannot be empty or exceed 50 characters.");
     expect(() => new PartRecord({
         ...defaultObj,
         name: 'a'.repeat(51),
-    })).toThrow("Nazwa części nie może być pusta, ani przekraczać 50 znaków.");
+    })).toThrow("Part name cannot be empty or exceed 50 characters.");
 });
 
 test('Validates invalid amount', () => {
     expect(() => new PartRecord({
         ...defaultObj,
         amount: 1999999.99,
-    })).toThrow('Ilość części nie może być mniejsza od 0 lub większa od 999999.99.');
+    })).toThrow('Parts amount must exist and cannot be less than 0 or greater than 999999.99.');
     expect(() => new PartRecord({
         ...defaultObj,
         amount: null,
-    })).toThrow('Ilość części nie może być mniejsza od 0 lub większa od 999999.99.');
+    })).toThrow('Parts amount must exist and cannot be less than 0 or greater than 999999.99.');
 });
 
 test('Validates invalid storagePlace', async () => {
     expect(() => new PartRecord({
         ...defaultObj,
         storagePlace: 'a'.repeat(31),
-    })).toThrow('Nazwa miejsca przechowywania części nie może być większe od 30.');
+    })).toThrow('Storage place name must exist and cannot be greater than 30 characters.');
     expect(() => new PartRecord({
         ...defaultObj,
         storagePlace: null,
-    })).toThrow('Nazwa miejsca przechowywania części nie może być większe od 30.');
+    })).toThrow('Storage place name must exist and cannot be greater than 30 characters.');
 });

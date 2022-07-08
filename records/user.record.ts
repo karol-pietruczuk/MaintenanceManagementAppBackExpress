@@ -30,11 +30,11 @@ export class UserRecord implements NewUserEntity {
     constructor(obj: NewUserEntity) {
 
         if (!obj.email || typeof obj.email !== "string" || obj.email.length > 50 || !obj.email.includes('@')) {
-            throw new ValidationError('Podany adres email jest niepoprawny.');
+            throw new ValidationError('Invalid email address!');
         }
 
         if (obj.password === null || obj.password === undefined || typeof obj.password !== "string" || !schema.validate(obj.password)) {
-            throw new ValidationError('Podane hasło jest niepoprawne.');
+            throw new ValidationError('Invalid password.');
         }
 
         this.id = obj.id;
@@ -48,9 +48,9 @@ export class UserRecord implements NewUserEntity {
 
         static async getOne(email: string, idInstOfEmail = false): Promise<UserRecord | null> {
             if (!idInstOfEmail && typeof email !== 'string') {
-                throw new ValidationError('Niepoprawny email!');
+                throw new ValidationError('Invalid email!');
             } else if (typeof email !== 'string') {
-                throw new ValidationError('Niepoprawne id!');
+                throw new ValidationError('Invalid id!');
             }
 
             const [results] = idInstOfEmail ?
@@ -78,7 +78,7 @@ export class UserRecord implements NewUserEntity {
             const emails = (await UserRecord.getAll()).map(user => user.email);
 
             if (emails.includes(this.email)) {
-                throw new ValidationError('Użytkownik o podanym adresie email już istnieje!')
+                throw new ValidationError('User with given email already exists!')
             }
 
             this.createTime = new Date();

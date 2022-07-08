@@ -18,23 +18,23 @@ test('Validates invalid name', () => {
     expect(() => new OrderRecord({
         ...defaultObj,
         name: null,
-    })).toThrow("Nazwa zamówienia nie może być pusta, ani przekraczać 100 znaków.");
+    })).toThrow("Order name cannot be empty or exceed 100 characters.");
     expect(() => new OrderRecord({
         ...defaultObj,
         name: 'a'.repeat(101),
-    })).toThrow("Nazwa zamówienia nie może być pusta, ani przekraczać 100 znaków.");
+    })).toThrow("Order name cannot be empty or exceed 100 characters.");
 });
 
 test('Validates invalid description', () => {
     expect(() => new OrderRecord({
         ...defaultObj,
         description: 'a'.repeat(1001),
-    })).toThrow("Opis zamówienia nie może przekraczać 1000 znaków.");
+    })).toThrow("Order description must exist and cannot exceed 1000 characters.");
 });
 
 test('Validates possibility to insert undefined to description', async () => {
     expect(() => new OrderRecord({
         ...defaultObj,
         description: undefined,
-    })).toThrow("Opis zamówienia nie może przekraczać 1000 znaków.");
+    })).toThrow("Order description must exist and cannot exceed 1000 characters.");
 });

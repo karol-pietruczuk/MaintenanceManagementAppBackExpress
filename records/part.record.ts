@@ -18,15 +18,15 @@ export class PartRecord implements NewPartEntity {
 
     constructor(obj: NewPartEntity) {
         if (!obj.name || typeof obj.name !== "string" || obj.name.length > 50) {
-            throw new ValidationError('Nazwa części nie może być pusta, ani przekraczać 50 znaków.');
+            throw new ValidationError('Part name cannot be empty or exceed 50 characters.');
         }
 
         if (obj.amount === null || obj.amount === undefined || typeof obj.amount !== 'number' || obj.amount > 999999.99 || obj.amount < 0) {
-            throw new ValidationError('Ilość części nie może być mniejsza od 0 lub większa od 999999.99.');
+            throw new ValidationError('Parts amount must exist and cannot be less than 0 or greater than 999999.99.');
         }
 
         if (obj.storagePlace === null || obj.storagePlace === undefined || typeof obj.storagePlace !== 'string' || obj.storagePlace.length > 30) {
-            throw new ValidationError('Nazwa miejsca przechowywania części nie może być większe od 30.');
+            throw new ValidationError('Storage place name must exist and cannot be greater than 30 characters.');
         }
 
         this.id = obj.id;
