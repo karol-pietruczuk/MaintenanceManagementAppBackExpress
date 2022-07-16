@@ -17,10 +17,10 @@ export const handleFindVariables = (
     rows: number;
     page: number;
 } => {
-    const sortAsc = (obj.sortAsc || typeof obj.sortAsc === 'boolean') ? obj.sortAsc : true;
-    const name = (obj.name || typeof obj.name === 'string') ? obj.name : '';
-    const rows = (obj.rows || typeof obj.rows === 'number') ? obj.rows : 15;
-    const page = (obj.page || typeof obj.page === 'number') ? obj.page : 1;
+    const sortAsc = (obj.sortAsc !== 'false');
+    const name = obj.name ? obj.name : '';
+    const rows = obj.rows ? Number(obj.rows) : 15;
+    const page = obj.page ? Number(obj.page) : 1;
     return {
         sortAsc,
         name,

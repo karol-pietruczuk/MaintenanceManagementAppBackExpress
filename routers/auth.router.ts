@@ -23,10 +23,17 @@ export const authRouter = Router()
         user.refreshToken = refreshToken;
         await user.update();
 
+        // res.header('Access-Control-Allow-Credentials', 'true');
+        // res.header('Access-Control-Allow-Origin', req.headers.origin);
+        // res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
+        // res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+
         res.cookie('JWT', accessToken, {
                 maxAge: 86400000,
                 httpOnly: true,
         });
+
+
 
         res.json({
             accessToken,
@@ -36,7 +43,8 @@ export const authRouter = Router()
     })
     .post('/refresh', async (req, res) => {
 
-        const refreshToken = req.body.token
+        const refreshToken = req.body.refreshToken;
+        console.log(req.body)
 
         if (!refreshToken) {
                 throw new AuthError("Unauthorized.");
@@ -53,10 +61,12 @@ export const authRouter = Router()
         const validToken = jwt.verify(refreshToken, config.refreshSecretToken)
 
         if (!validToken) {
-            throw new AccessError("Forbidden");
+            throw new AuthError("Unauthorized");
         }
 
         const accessToken = generateAccessToken({ id: user.id });
+        console.log({accessToken})
+        'WPISUJEMY COOKIE!'
 
         res.cookie('JWT', accessToken, {
             maxAge: 86400000,

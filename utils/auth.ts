@@ -11,7 +11,7 @@ export function authenticate(req: AuthenticationRequest, res: Response, next: Ne
     if (token === null || token === undefined) throw new AuthError("Please login first.");
 
     jwt.verify(token, config.secretToken, (err, user: AuthData) => {
-        if (err) throw new AccessError("Access Forbidden.");
+        if (err) throw new AuthError("Invalid access token.");
         req.user = user;
         next();
     });

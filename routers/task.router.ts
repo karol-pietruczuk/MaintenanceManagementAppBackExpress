@@ -8,9 +8,13 @@ import {AuthenticationRequest} from "../types/auth/auth";
 import {UserRecord} from "../records/user.record";
 
 export const taskRouter = Router()
-    .get('/', authenticate, async (req: AuthenticationRequest, res) => {
-        const {sortAsc, name, rows, page} = handleFindVariables(req.body)
+    .get('/:sortAsc/:rows/:page/:name?', authenticate, async (req: AuthenticationRequest, res) => {
+        const {sortAsc, name, rows, page} = handleFindVariables(req.params)
         const tasks = await TaskRecord.find(sortAsc, name, rows, page);
+        res.json(tasks);
+    })
+    .get('/', authenticate, async (req: AuthenticationRequest, res) => {
+        const tasks = await TaskRecord.find();
         res.json(tasks);
     })
     .post('/', authenticate, async (req: AuthenticationRequest, res) => {
