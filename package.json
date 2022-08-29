@@ -1,5 +1,5 @@
 {
-  "name": "maintenance-management-app-back",
+  "name": "maintenance-management-app-back-express",
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
